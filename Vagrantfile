@@ -60,7 +60,7 @@ Vagrant.configure(2) do |config|
 
       if setup_complete
         host.vm.provision "ansible" do |ansible|
-          # ansible.galaxy_role_file = "requirements.yml"
+          ansible.galaxy_role_file = "requirements.yml"
           ansible.playbook = "playbook#{package}.yml"
         end
       end

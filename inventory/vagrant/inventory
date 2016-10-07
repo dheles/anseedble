@@ -1,0 +1,11 @@
+# dev (vagrant):
+# ------------------
+[app]
+ansiblebox.boxen.dev
+
+[db]
+db.boxen.dev
+
+[dev:children]
+app
+db

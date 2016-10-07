@@ -1,8 +1,6 @@
-# deploy_test
+# anseedble
 
-Simple Vagrant project for standing up one or more servers to test provisioning, deployment, and whatnot
-
-Currently uses Centos 7 or Debian Jessie and sets up created VMs for management by Ansible
+A starting point for Ansible projects. Includes Vagrantfile and scripts for setting up VMs for ansibilization.
 
 ## preliminaries
 ### ssh config
