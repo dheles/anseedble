@@ -9,7 +9,7 @@ auto_key        = "~/.ssh/personal_dev.pub"
 setup_complete  = false
 
 # NOTE: currently using the same OS for all boxen
-OS="centos" # "debian" || "centos"
+OS="debian" # "debian" || "centos"
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -29,9 +29,9 @@ Vagrant.configure(2) do |config|
   end
 
   {
-    'ansiblebox' => '10.11.12.101',
-    #'db'          => '10.11.12.102',
-    #'solr'        => '10.11.12.103'
+    # 'solr'  => '10.11.12.103',
+    # 'db'    => '10.11.12.102',
+    'app'   => '10.11.12.101'
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
       host.vm.network 'private_network', ip: ip
@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
 
       host.vm.provider "virtualbox" do |vb|
         vb.name = "#{short_name}.#{domain}"
-        vb.memory = 512
+        vb.memory = 256
         vb.linked_clone = true
       end
 
@@ -54,14 +54,16 @@ Vagrant.configure(2) do |config|
       # add authorized key to user created by the prereqs script
       authorize_key host, auto_user, auto_key
 
-      if short_name == "ansiblebox" # last in the list
+      if short_name == "app" # last in the list
         setup_complete = true
       end
 
       if setup_complete
         host.vm.provision "ansible" do |ansible|
-          ansible.galaxy_role_file = "requirements.yml"
-          ansible.playbook = "playbook#{package}.yml"
+          # ansible.galaxy_role_file = "requirements.yml"
+          ansible.inventory_path = "inventory/vagrant"
+          ansible.playbook = "main.yml"
+          ansible.limit = "all"
         end
       end
     end

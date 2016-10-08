@@ -1,0 +1,14 @@
+# dev (vagrant):
+# ------------------
+[app]
+app.boxen.dev:2299
+
+#[db]
+#db.boxen.dev
+
+[dev:children]
+app
+#db
+
+[all:vars]
+ansible_port=2299
