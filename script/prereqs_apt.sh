@@ -2,26 +2,23 @@
 
 function usage
 {
-  echo "usage: prereqs_apt [[[-a ADMIN ] | [-h]]"
+  echo "usage: prereqs_apt [[-l LOGIN_USER ] | [-h]]"
 }
 
 # set defaults:
-SSH_USER="vagrant"
-SSH_USER_HOME="/home/$SSH_USER"
-ADMIN="deploy"
-ADMIN_HOME="/home/$ADMIN"
+LOGIN_USER="deploy"
 
 # process arguments:
 while [ "$1" != "" ]; do
   case $1 in
-    -a | --admin )    shift
-                      ADMIN=$1
-                      ;;
-    -h | --help )     usage
-                      exit
-                      ;;
-    * )               usage
-                      exit 1
+    -l | --login_user )   shift
+                          LOGIN_USER=$1
+                          ;;
+    -h | --help )         usage
+                          exit
+                          ;;
+    * )                   usage
+                          exit 1
   esac
   shift
 done
@@ -30,36 +27,23 @@ echo "--> updating"
 sudo apt-get update
 sudo apt-get upgrade
 
-echo "--> adding admin user $ADMIN..."
-sudo useradd -m $ADMIN
-id $ADMIN
+echo "--> adding login user $LOGIN_USER..."
+sudo useradd -m $LOGIN_USER
+id $LOGIN_USER
 
-echo "--> giving admin user passwordless sudo"
-# sudo bash -c 'echo "$ADMIN ALL=(ALL) NOPASSWD: ALL" | (EDITOR="tee -a" visudo)'
-if (! grep -q $ADMIN /etc/sudoers) ; then
+echo "--> giving login user passwordless sudo"
+# sudo bash -c 'echo "$LOGIN_USER ALL=(ALL) NOPASSWD: ALL" | (EDITOR="tee -a" visudo)'
+if (! grep -q $LOGIN_USER /etc/sudoers) ; then
   cp /etc/sudoers /tmp/sudoers.edit
-  echo "$ADMIN ALL=(ALL) NOPASSWD: ALL" >> /tmp/sudoers.edit
+  echo "$LOGIN_USER ALL=(ALL) NOPASSWD: ALL" >> /tmp/sudoers.edit
   visudo -c -f /tmp/sudoers.edit
   if [ "$?" = "0" ] ; then
     cp /etc/sudoers /etc/sudoers.back
     cp /tmp/sudoers.edit /etc/sudoers
   fi
 else
-  echo "sudo already granted to $ADMIN"
+  echo "sudo already granted to $LOGIN_USER"
 fi
-
-# # NOTE: moved to authorize_key.rb,
-# echo "--> adding authorized_key..."
-# if [ ! -f $ADMIN_HOME/.ssh/authorized_keys ]; then
-#   sudo mkdir -p $ADMIN_HOME/.ssh
-#   sudo touch $ADMIN_HOME/.ssh/authorized_keys
-#   sudo sh -c "cat $SSH_USER_HOME/.ssh/authorized_key.pub >> $ADMIN_HOME/.ssh/authorized_keys"
-#   sudo chown -R $ADMIN: $ADMIN_HOME/.ssh
-#   sudo chmod 700 $ADMIN_HOME/.ssh
-#   sudo chmod 600 $ADMIN_HOME/.ssh/*
-# else
-#   echo "authorized_key already added"
-# fi
 
 echo "--> checking SELinux status"
 # sestatus

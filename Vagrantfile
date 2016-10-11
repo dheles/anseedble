@@ -4,12 +4,12 @@
 require_relative './script/authorize_key'
 
 domain          = "boxen.dev"
-auto_user       = "deploy"
-auto_key        = "~/.ssh/personal_dev.pub"
+login_user       = "deploy"
+login_key        = "~/.ssh/personal_dev.pub"
 setup_complete  = false
 
 # NOTE: currently using the same OS for all boxen
-OS="debian" # "debian" || "centos"
+OS="centos" # "debian" || "centos"
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
@@ -49,10 +49,10 @@ Vagrant.configure(2) do |config|
       end
 
       # do minimal provisioning (in order to do further work with Ansible)
-      host.vm.provision "prerequisites", type: "shell", path: "script/prereqs#{package}.sh"
+      host.vm.provision "prerequisites", type: "shell", path: "script/prereqs#{package}.sh", args: "-l #{login_user}"
 
       # add authorized key to user created by the prereqs script
-      authorize_key host, auto_user, auto_key
+      authorize_key host, login_user, login_key
 
       if short_name == "app" # last in the list
         setup_complete = true

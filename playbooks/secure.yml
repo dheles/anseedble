@@ -8,6 +8,7 @@
       service: name={{ ssh_service }} state=restarted
 
   tasks:
+    # alternately, consider http://docs.ansible.com/ansible/playbooks_best_practices.html#operating-system-and-distribution-variance
     - name: include os-specific variables
       include_vars: "{{ item }}"
       with_first_found:
