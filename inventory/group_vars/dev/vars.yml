@@ -1,1 +1,6 @@
-password:          "{{ vault_password }}"
+# meta vars
+environ:  "dev" # dev || stage || prod
+bootstrap_user: "vagrant"
+
+# private vars
+login_user_passphrase: "{{ vault_login_user_passphrase }}"

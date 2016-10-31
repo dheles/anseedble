@@ -1,11 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-require_relative './script/authorize_key'
+# require_relative './script/authorize_key'
 
-domain          = "boxen.dev"
-auto_user       = "deploy"
-auto_key        = "~/.ssh/personal_dev.pub"
+domain          = "test.dev"
+# auto_user       = "deploy"
+# auto_key        = "~/.ssh/personal_dev.pub"
 setup_complete  = false
 
 # NOTE: currently using the same OS for all boxen
@@ -30,7 +30,7 @@ Vagrant.configure(2) do |config|
 
   {
     'ansiblebox' => '10.11.12.101',
-    #'db'          => '10.11.12.102',
+    'db'         => '10.11.12.102',
     #'solr'        => '10.11.12.103'
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
@@ -48,20 +48,22 @@ Vagrant.configure(2) do |config|
         vb.linked_clone = true
       end
 
-      # do minimal provisioning (in order to do further work with Ansible)
-      host.vm.provision "prerequisites", type: "shell", path: "script/prereqs#{package}.sh"
+      # # do minimal provisioning (in order to do further work with Ansible)
+      # host.vm.provision "prerequisites", type: "shell", path: "script/prereqs#{package}.sh"
+      #
+      # # add authorized key to user created by the prereqs script
+      # authorize_key host, auto_user, auto_key
 
-      # add authorized key to user created by the prereqs script
-      authorize_key host, auto_user, auto_key
-
-      if short_name == "ansiblebox" # last in the list
+      if short_name == "db" # last in the list
         setup_complete = true
       end
 
       if setup_complete
         host.vm.provision "ansible" do |ansible|
-          ansible.galaxy_role_file = "requirements.yml"
-          ansible.playbook = "playbook#{package}.yml"
+          # ansible.galaxy_role_file = "requirements.yml"
+          ansible.inventory_path = "inventory/vagrant"
+          ansible.playbook = "playbooks/automation_setup.yml" # "playbook#{package}.yml"
+          ansible.limit = "all"
         end
       end
     end

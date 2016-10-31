@@ -1,10 +1,10 @@
 # dev (vagrant):
 # ------------------
 [app]
-ansiblebox.boxen.dev
+ansiblebox.test.dev
 
 [db]
-db.boxen.dev
+db.test.dev
 
 [dev:children]
 app
