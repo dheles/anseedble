@@ -1,6 +1,6 @@
 ---
 # TODO: handle OSes other than CentOS
-# TODO: consider removing temp and backup files on success
+# TODO: consider removing temp files on success
 
 # NOTE: this is only useful in an environment were we begin with VMs
 # to which we already have access as authenticated users, but which do not have
@@ -17,27 +17,15 @@
 # ask_pass = True
 # ask_sudo_pass = True
 
-# - name: create ssh key for project and environment
-#   hosts: localhost
-#
-#   tasks:
-#     - name: create ssh key
-#       command: >
-#         ssh-keygen -t rsa
-#         -b 15360
-#         -f "{{ login_user_key }}"
-#         -C "{{ login_user }} @ {{ project }} {{ environ }} key"
-#         -N "{{ login_user_passphrase }}"
-
 - name: set up for automation
   hosts: all
 
   tasks:
-    # TODO: go back to 15k (15360) after testing
+    # TODO: consider 15k (15360) after testing
   - name: create ssh key for login user
     shell: >
       ssh-keygen -t rsa
-      -b 2048
+      -b 4096
       -f "{{ login_user_key }}"
       -C "{{ login_user }} @ {{ project }} {{ environ }} key"
       -N "{{ login_user_passphrase }}"
@@ -45,6 +33,7 @@
       chdir: "~/.ssh"
       creates: "{{ login_user_key }}"
     delegate_to: 127.0.0.1
+    run_once: true
     when: "{{ create_login_user_key }}"
 
   - name: gather facts
@@ -84,6 +73,7 @@
         validate: 'visudo -cf %s'
         remote_src: true
         # backup: true
+
     become: true
   # ...end block
 
