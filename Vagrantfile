@@ -4,8 +4,6 @@
 # require_relative './script/authorize_key'
 
 domain          = "test.dev"
-login_user       = "deploy"
-login_key        = "~/.ssh/personal_dev.pub"
 setup_complete  = false
 
 # NOTE: currently using the same OS for all boxen
@@ -62,7 +60,7 @@ Vagrant.configure(2) do |config|
         host.vm.provision "ansible" do |ansible|
           # ansible.galaxy_role_file = "requirements.yml"
           ansible.inventory_path = "inventory/vagrant"
-          ansible.playbook = "main.yml"
+          ansible.playbook = "setup.yml"
           ansible.limit = "all"
         end
       end

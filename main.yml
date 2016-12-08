@@ -1,3 +1,2 @@
 ---
-- include: playbooks/automation_setup.yml
-- include: playbooks/secure.yml
+# include project playbooks here
