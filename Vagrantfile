@@ -1,8 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# require_relative './script/authorize_key'
-
 domain          = "test.dev"
 setup_complete  = false
 
@@ -36,7 +34,7 @@ Vagrant.configure(2) do |config|
       host.vm.hostname = "#{short_name}.#{domain}"
       # presumes installation of https://github.com/cogitatio/vagrant-hostsupdater on host
       host.hostsupdater.aliases = ["#{short_name}"]
-      # avoinding "Authentication failure" issue
+      # avoiding "Authentication failure" issue
       host.ssh.insert_key = false
       host.vm.synced_folder ".", "/vagrant", disabled: true
 
@@ -46,19 +44,13 @@ Vagrant.configure(2) do |config|
         vb.linked_clone = true
       end
 
-      # # do minimal provisioning (in order to do further work with Ansible)
-      # host.vm.provision "prerequisites", type: "shell", path: "script/prereqs#{package}.sh"
-      #
-      # # add authorized key to user created by the prereqs script
-      # authorize_key host, auto_user, auto_key
-
       if short_name == "app" # last in the list
         setup_complete = true
       end
 
       if setup_complete
         host.vm.provision "ansible" do |ansible|
-          # ansible.galaxy_role_file = "requirements.yml"
+          ansible.galaxy_role_file = "requirements.yml"
           ansible.inventory_path = "inventory/vagrant"
           ansible.playbook = "setup.yml"
           ansible.limit = "all"

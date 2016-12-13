@@ -1,12 +1,10 @@
 # REM: if you are looking for passwords or other variables
 # that vary from dev to stage to prod, check the other subfolders
 
-# meta vars
+# setup vars
 project:        "anseedble"
-version:        "0.2.0"
+version:        "0.3.0"
 login_user:     "deploy"
-login_user_key: "{{ project }}_{{ environ }}"
-create_login_user_key:  true
 
 # ssh vars
 ssh_port: 22

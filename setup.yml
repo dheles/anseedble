@@ -1,3 +1,8 @@
 ---
-- include: playbooks/automation_setup.yml
+- name: create login user for installation & configuration
+  hosts: all
+
+  roles:
+  - { role: login-user }
+  
 - include: playbooks/secure.yml

@@ -2,33 +2,49 @@
 
 A starting point for Ansible projects. Includes Vagrantfile and scripts for setting up VMs for ansibilization.
 
-## preliminaries
-### ssh config
-Add something like the following to your ssh config (probably ~/.ssh/config):
+## things done by default:
 
-NOTE: *only* for your local servers *not* for production boxes (or even stage, most likely)
+### sets up a login user
+via the [login-user role](https://github.com/dheles/ansible-role-login-user)
 
-    Host 10.11.12.* *.boxen.dev
-    	StrictHostKeyChecking no
-    	UserKnownHostsFile=/dev/null
-    	User deploy
-    	LogLevel ERROR
-    	IdentityFile ~/.ssh/personal_dev
+#### creates the user
 
-### ssh key
-The previous version of this project used a file provisioner
-to deploy a copy of your public ssh key to the VM.
-The problem with this approach is that *sometimes*
-the file provisioner hasn't done its job by the time the prereqs script runs.
-when this happens, the key is not yet in its expected place to be moved over.
-Instead, calling the authorize_key.rb script modified from
-http://hakunin.com/six-ansible-practices.
-This script just calls a file provisioner anyway, but
-I believe that doing so in the same script that uses the file
-ensures that the provisioning step completes before the next tries to use it...
+    login_user: "deploy"
 
-### OS variable
-Con't forget to set the OS variable in the Vagrantfile. currently supports Debian and Centos
+#### gives it sudo
 
-### recommended (but not required): vagrant hostsupdater plugin
+TODO: grant the power to change
+
+#### creates and deploys ssh keys for the user on the server
+
+    create_login_user_key:  true
+    login_user_key:         "{{ project }}_{{ environ }}"
+    login_user_passphrase:  "change me in the vault file for the environment"
+    key_type:               "rsa"
+    key_size:               4096
+
+### creates an ssh config entry
+looks like this:
+
+    # BEGIN app.test.dev dev
+    Host app.test.dev app
+    Hostname app.test.dev
+    User deploy
+    IdentityFile ~/.ssh/anseedble_dev
+    PreferredAuthentications publickey
+    IdentitiesOnly yes
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+    # END app.test.dev dev
+
+not what you want? np. just say nah:
+
+    create_ssh_config_entry: no
+
+### secures ssh
+
+TODO: deets
+
+## recommended
+(but not required): vagrant hostsupdater plugin
 https://github.com/cogitatio/vagrant-hostsupdater
