@@ -4,3 +4,6 @@
 
 - src: https://github.com/dheles/ansible-role-login-user
   name: login-user
+
+- src: https://github.com/dheles/ansible-role-secure-ssh
+  name: secure-ssh

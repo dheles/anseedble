@@ -4,5 +4,10 @@
 
   roles:
   - { role: login-user }
-  
-- include: playbooks/secure.yml
+
+- name: secure SSH
+  hosts: all
+  become: true
+
+  roles:
+  - { role: secure-ssh }
