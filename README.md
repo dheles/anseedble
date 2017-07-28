@@ -2,6 +2,8 @@
 
 A starting point for Ansible projects. Includes Vagrantfile and scripts for setting up VMs for ansibilization.
 
+Use of this project is discussed in [this blog post](https://codhicitta.github.io/ansible/devops/2017/01/14/ansible-workflow.html).
+
 ## things done by default:
 
 ### sets up a login user
