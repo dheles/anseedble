@@ -42,6 +42,16 @@ Vagrant.configure(2) do |config|
         vb.name = "#{short_name}.#{domain}"
         vb.memory = 256
         vb.linked_clone = true
+
+        if short_name == "app"
+          # port forwarding http:
+          # host.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true
+        end
+
+        if short_name == "db"
+          # port forwarding postgres
+          # host.vm.network "forwarded_port", guest: 5432, host: 15432, auto_correct: true
+        end
       end
 
       if short_name == "app" # last in the list
