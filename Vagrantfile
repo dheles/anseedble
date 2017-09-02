@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-domain          = "test.dev"
+domain          = "test"
 setup_complete  = false
 
 # NOTE: currently using the same OS for all boxen
