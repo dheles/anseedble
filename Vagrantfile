@@ -25,9 +25,9 @@ Vagrant.configure(2) do |config|
   end
 
   {
-    # 'solr'  => '10.11.12.103',
-    # 'db'    => '10.11.12.102',
-    'app'   => '10.11.12.101'
+    # 'solr'  => '10.1.1.103',
+    # 'db'    => '10.1.1.102',
+    'app'   => '10.1.1.101'
   }.each do |short_name, ip|
     config.vm.define short_name do |host|
       host.vm.network 'private_network', ip: ip
