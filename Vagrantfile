@@ -14,8 +14,10 @@ OS="centos" # "debian" || "centos"
 Vagrant.configure(2) do |config|
   if OS=="debian"
     config.vm.box = "debian/stretch64"
+    config.vm.box_version = "9.2.0"
   elsif OS=="centos"
     config.vm.box = "centos/7"
+    config.vm.box_version = "1710.01" # 7.4.1708
   else
     puts "you must set the OS variable to a valid value before continuing"
     exit
