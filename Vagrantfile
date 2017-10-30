@@ -13,7 +13,7 @@ OS="centos" # "debian" || "centos"
 # you're doing.
 Vagrant.configure(2) do |config|
   if OS=="debian"
-    config.vm.box = "debian/jessie64"
+    config.vm.box = "debian/stretch64"
   elsif OS=="centos"
     config.vm.box = "centos/7"
   else
