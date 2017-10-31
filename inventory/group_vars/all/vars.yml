@@ -3,5 +3,5 @@
 
 # setup vars
 project:        "anseedble"
-version:        "0.5.0"
+version:        "0.6.0"
 login_user:     "deploy"
