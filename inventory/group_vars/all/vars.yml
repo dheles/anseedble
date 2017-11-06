@@ -3,5 +3,8 @@
 
 # setup vars
 project:        "anseedble"
-version:        "0.6.0"
+version:        "1.0.0"
 login_user:     "deploy"
+
+# testing vars
+set_up_tests:   true
