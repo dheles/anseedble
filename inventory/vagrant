@@ -1,5 +1,8 @@
 # dev (vagrant):
 # ------------------
+[default]
+app.test
+
 [app]
 app.test
 
